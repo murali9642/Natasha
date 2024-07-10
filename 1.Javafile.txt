@@ -1,0 +1,32 @@
+Java file 
+code 
+execute the file 
+import java.io.*;
+
+// Serializable record
+public record User(String name, int age) implements Serializable {}
+
+public class SerializationExample {
+    public static void main(String[] args) {
+        User user = new User("Alice", 30);
+
+        // Serialize the User object to a file
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("user.ser"))) {
+            oos.writeObject(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Deserialize the User object from the file
+        User deserializedUser = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("user.ser"))) {
+            deserializedUser = (User) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (deserializedUser != null) {
+            System.out.println("Deserialized User: " + deserializedUser);
+        }
+    }
+}
